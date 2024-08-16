@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register || LockerProtection</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+</head>
+
+<body>
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Email</label>
+        <input type="email" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <label for="repassword">Confirm Password</label>
+        <input type="password" name="repassword" id="repassword">
+        <input type="submit" value="Register">
+    </form>
+    <a href="{% url 'login' %}">Already Have an Account Login Here</a>
+</body>
+
+</html>
