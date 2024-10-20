@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Records || LockerProtection</title>
+    <link rel="stylesheet" href="{% static 'viewData.css' %}">
+</head>
+
+<body>
+    <header>
+        <h1>LockerProtection</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <table>
+            <tr>
+                <th>File Name</th>
+                <th>Description</th>
+                <th>File</th>
+                <th>Actions</th>
+            </tr>
+            {% for data in user_data %}
+            <tr>
+                <td>{{ data.fileName }}</td>
+                <td>{{ data.description }}</td>
+                <td>
+                    {% if data.fileUpload %}
+                    <a class="downloadBtn" href="{{ data.fileUpload.url }}" download>Download</a>
+                    {% else %}
+                    No file uploaded
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{% url 'deleteData' data.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="submitBtn" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+    <footer>
+        <h2>Hello {{user}}</h2>
+    </footer>
+</body>
+
+</html>

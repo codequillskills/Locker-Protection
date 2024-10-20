@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage || LockerProtection</title>
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <script>
+        function validateFile() {
+            const fileInput = document.getElementById('fileUpload');
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf|\.doc|\.docx|\.xls|\.xlsx|\.txt)$/i;
+
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.value;
+                const fileSize = fileInput.files[0].size;
+                const maxSizeBytes = 1024 * 1024;
+
+                if (!allowedExtensions.exec(fileName)) {
+                    alert('Invalid file type. Please upload a file with one of the following extensions: .jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .xls, .xlsx, .txt');
+                    fileInput.value = '';
+                    return false;
+                }
+                if (fileSize > maxSizeBytes) {
+                    alert('File size too large. The maximum file size allowed is 1MB.');
+                    fileInput.value = '';
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>LockerProtection</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'viewdata' %}">View Records</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>UPLOAD FILE OR TEXT</h2>
+        <form action="{% url 'dashboard' %}" method="post" enctype="multipart/form-data"
+            onsubmit="return validateFile()">
+            {% csrf_token %}
+            <label for="fileName">File Name</label>
+            <input type="text" id="fileName" name="fileName" required>
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+            <label for="fileUpload">Upload File</label>
+            <input type="file" id="fileUpload" name="fileUpload">
+            <button type="submit" class="btn">Upload</button>
+        </form>
+    </main>
+    <footer>
+        <h2>Hello {{user}}</h2>
+    </footer>
+</body>
+
+</html>
